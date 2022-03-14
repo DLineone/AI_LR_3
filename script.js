@@ -145,7 +145,8 @@ function startTest()
 
     const func = () =>{
         if(ansver.length === 2)
-        { 
+        {  
+            
             endQuestionPositive(ansver);
             return 0;
         }
