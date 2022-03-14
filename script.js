@@ -82,25 +82,37 @@ function startTest()
     function endQuestionNegative(ansver)
     {
         ansverDiv.style.display = "none";
-        console.log(ansver);
+        inputProperty.value = '';
+        inputObject.value = '';
         if(ansver.length < 2)
         {
             addPropertyDiv.style.display = "flex";
+            let text = ansver.length === 0 ? `Объект не найден, добавьте свойство.` : `Добавьте второе свойство.`;
+            textArea.innerText = text;
+            buttonProperty.onclick = () =>{
+                propertys.push(inputProperty.value);
+                ansver.push(propertys.length - 1);
+                endQuestionNegative(ansver);
+            }
+            return 0;
         }
-        else 
+        else
         {
+            addPropertyDiv.style.display = "none";
             addObjectDiv.style.display = "flex";
+            textArea.innerText = `Введите название объекта.`;
+            inputObject.focus();
+            buttonObject.onclick =  () => {
+                objects.push({name: inputObject.value, prop1: ansver[0], prop2: ansver[1]})
+                inputObject.value = '';
+                endQuestionPositive(ansver);
+            }
+            return 0;
         }
     }
 
     function endQuestionPositive(ansver)
-    {
-        console.log(ansver[0]);
-        console.log(ansver[1]);
-        console.log(propertys[ansver[0]]);
-        console.log(propertys[ansver[1]]);
-        
-
+    {   
         let valid = objects.some((object) =>
             ((object.prop1 === ansver[0] && object.prop2 === ansver[1]) ||
             ( object.prop2 === ansver[0] && object.prop1 === ansver[1]))
@@ -124,9 +136,8 @@ function startTest()
             textArea.innerHTML = `Такого объекта нет в базе.<br>Введите его название.`;
             inputObject.focus();
             buttonObject.onclick =  () => {
-                objects.push({name: inputObject.value, prop1: ansver[0], prop2: ansver[1]})
-                inputObject.value = '',
-                console.log(objects);
+                objects.push({name: inputObject.value, prop1: ansver[0], prop2: ansver[1]});
+                inputObject.value = '';
                 endQuestionPositive(ansver);
             }
         }
@@ -151,6 +162,6 @@ function startTest()
         ansverNo.onclick = ()=>buttonNo(countant);
     };
 
-    func(propCopy);
+    func();
 }
 
